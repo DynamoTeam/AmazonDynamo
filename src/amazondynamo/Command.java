@@ -35,4 +35,9 @@ public class Command implements Serializable{
        this.obj = obj;
                 
    }
+   
+   public String toString()
+   {
+       return key + "  " + obj.toString();
+   }
 }
