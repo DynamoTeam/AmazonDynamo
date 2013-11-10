@@ -8,6 +8,7 @@ package amazondynamo;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,27 +29,35 @@ public class LoadBalancerThread extends Thread{
      public void run() {
         while(true){
             try {
-                ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());        
-                parseObject(input.readObject());        
-                input.close();
+                // Create input and output streams for this client.
+                ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream()); 
+                
+                
+                while (true) {
+                    if (parseObject(is.readObject()) == 1)
+                        break;
+                }
+                
+                is.close();
+                
                 clientSocket.close();
-
-            }   catch (ClassNotFoundException ex) {
-                    Logger.getLogger(LoadBalancerThread.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LoadBalancerThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
      }
      
-     public void parseObject(Object o)
+     public int parseObject(Object o)
      {
         if(o instanceof Command )
         {
             Command command = (Command)o;
             System.out.println(command);    
-            
+            return 0;
         }
+        else 
+            return 1;
      }    
     
 }

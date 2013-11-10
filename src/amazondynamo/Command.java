@@ -38,6 +38,13 @@ public class Command implements Serializable{
    
    public String toString()
    {
-       return key + "  " + obj.toString();
+       String str = "";
+       if (this.msgType == GET){
+           str+= "GET " + this.key;
+       }
+       else{
+           str+= "PUT " + this.key + " " + this.obj.toString();
+       }
+       return str;
    }
 }

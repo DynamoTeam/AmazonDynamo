@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class Client {
     
     static String host = "localhost";
-    static int port = 2222;
+    static int port = 2223;
     private static Socket clientSocket = null;
     private static ObjectOutputStream output = null;
     
@@ -43,14 +43,18 @@ public class Client {
     
     static void SendPut(String key, Object obj) throws IOException
     {
+        initConnection();
         Command put = new Command(Command.PUT, key, null, obj);        
         output.writeObject(put);
+        closeConnection();
     }
     
     static void SendGet(String key) throws IOException
     {
+        initConnection();
         Command get = new Command(Command.GET, key);        
         output.writeObject(get);
+        closeConnection();
     } 
     
     static void readLines()
@@ -85,15 +89,9 @@ public class Client {
     
     public static void main(String[] args)
     {
-        try { 
+        
             
             readLines();
-            initConnection();
             
-        } catch (UnknownHostException ex) {
-            System.err.println("Don't know about host " + host);
-        } catch (IOException ex) {
-             System.err.println("Couldn't get I/O for the connection to the host " + host);
-        }        
-    }
+    }   
 }
