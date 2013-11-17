@@ -33,13 +33,13 @@ public class Client extends BaseClient{
         this.port = port;
     }
     
-    void SendPut(String key, Object obj) throws IOException
+    void SendPut(int key, Object obj) throws IOException
     {
         Command put = new Command(Command.PUT, key, null, obj);        
         send(put, host, port);
     }
     
-    void SendGet(String key) throws IOException
+    void SendGet(int key) throws IOException
     {
         Command get = new Command(Command.GET, key);        
         send(get, host, port);
@@ -59,12 +59,12 @@ public class Client extends BaseClient{
                 if(tokens[0].compareTo("put") == 0)
                 {
                     System.out.println("put");
-                    SendPut(tokens[1],  tokens[2]);
+                    SendPut(Integer.parseInt(tokens[1]),  tokens[2]);
                 }
                 else if(tokens[0].compareTo("get") == 0)
                 {
                     System.out.println("get");
-                    SendGet(tokens[1]);
+                    SendGet(Integer.parseInt(tokens[1]));
                 }            
             }
         } catch (InterruptedException ex) {

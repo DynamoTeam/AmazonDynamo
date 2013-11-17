@@ -14,20 +14,18 @@ public class Command implements Serializable{
    public final static int GET = 0;
    public final static int PUT = 1;
    
-   int msgType;
-   
-  
-   String key; 
+   int msgType; 
+   int key; 
    Context context;
    Object obj;
    
-   public Command(int msgType, String key)
+   public Command(int msgType, int key)
    {
        this.msgType = msgType;
        this.key = key;
    }    
     
-   public Command(int msgType, String key, Context context, Object obj)
+   public Command(int msgType, int key, Context context, Object obj)
    {
        this.msgType = msgType;
        this.key = key;
