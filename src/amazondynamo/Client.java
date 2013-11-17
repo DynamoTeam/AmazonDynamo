@@ -21,28 +21,24 @@ import java.util.logging.Logger;
  */
 public class Client extends BaseClient{
     
-    
     public static BufferedReader bufferReader;
     private static final String FILE_PATH = "/src/amazondynamo/commands";
-   
-    String host;
-    int port;
+    static String hostLB = "localhost";
+    static int portLB = 2223;    
     
-    public Client(String host, int port) {
-        this.host = host;
-        this.port = port;
-    }
+    //TODO : send key to load balancer
+    // delete host and port and set them 
     
     void SendPut(int key, Object obj) throws IOException
     {
         Command put = new Command(Command.PUT, key, null, obj);        
-        send(put, host, port);
+        send(put, hostLB, portLB);
     }
     
     void SendGet(int key) throws IOException
     {
         Command get = new Command(Command.GET, key);        
-        send(get, host, port);
+        send(get, hostLB, portLB);
     } 
     
     void readLines()
@@ -83,10 +79,8 @@ public class Client extends BaseClient{
     
     public static void main(String[] args)
     {
-            int portLB = 2223;  
-            Client client = new Client("localhost", portLB);
+            Client client = new Client();
             client.readLines();
-            
     }   
     
 }
