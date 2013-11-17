@@ -50,7 +50,7 @@ public class StorageNode{
     public static void main(String args[]) throws IOException{
             String ip = "localhost";
             int port = 2224;
-            int ID = 1;
+            int ID = 10;
             StorageNode node = new StorageNode(port, ip, ID);
             
             

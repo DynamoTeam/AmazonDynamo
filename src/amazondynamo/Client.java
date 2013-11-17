@@ -65,8 +65,14 @@ public class Client extends BaseClient{
                 {
                     System.out.println("get");
                     SendGet(Integer.parseInt(tokens[1]));
-                }            
+                } 
+                
+                //TODO
+                //primeste de la LB
+                //se conecteaza la Nod
+                //
             }
+            
         } catch (InterruptedException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

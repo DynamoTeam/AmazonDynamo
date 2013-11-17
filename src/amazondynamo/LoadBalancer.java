@@ -21,6 +21,8 @@ public class LoadBalancer {
     private static final int port = 2223;
     
     static Vector<StorageNodeMetadata> storageNodes;
+    static int moduloRange=100;
+    
     
     public LoadBalancer(int port)
     {
@@ -31,7 +33,35 @@ public class LoadBalancer {
           System.out.println(e);
         }
         storageNodes = new Vector<>();
+    }
+
+    public static StorageNodeMetadata getNode(int key){
+        StorageNodeMetadata nodeMeta;
         
+        int hashKey = key % moduloRange;
+        
+        if (storageNodes.isEmpty())
+                return null;
+        else
+        {
+            nodeMeta = null;            
+            int diff = moduloRange;
+            for (int i=0; i<storageNodes.size(); i++){
+                StorageNodeMetadata node = storageNodes.get(i);
+                if ((node.getID() > key) && (node.getID() - key < diff))
+                    nodeMeta = node;
+            }
+            
+            if (nodeMeta == null)//when the key is store on the first node
+                    {
+                        //find the node with the smallest id
+                        nodeMeta = storageNodes.get(0);
+                        for (int i=1; i<storageNodes.size(); i++)
+                            if (storageNodes.get(i).getID()< nodeMeta.getID())
+                                nodeMeta = storageNodes.get(i);
+                    }
+            return nodeMeta;
+        }
     }
     
     public static void main(String args[])

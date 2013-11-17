@@ -8,8 +8,9 @@ package amazondynamo;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,13 +49,17 @@ public class LoadBalancerThread extends Thread{
         }
      }
      
-     public int parseObject(Object o)
+     public int parseObject(Object o) throws IOException
      {
         if(o instanceof Command )
         {
             Command command = (Command)o;
-            
             System.out.println(command);    
+            System.out.println(LoadBalancer.getNode(command.key));
+            
+            BaseClient client = new BaseClient();
+            client.send(LoadBalancer.getNode(command.key), 
+                    clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());
             return 0;
         }
         else if(o instanceof StorageNodeMetadata )
@@ -62,6 +67,8 @@ public class LoadBalancerThread extends Thread{
             StorageNodeMetadata metadata = (StorageNodeMetadata)o;
             System.out.println(metadata);
             LoadBalancer.storageNodes.add(metadata);
+           
+            System.out.println(LoadBalancer.storageNodes);
             return 0;
         }
         else 
