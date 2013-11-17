@@ -4,8 +4,10 @@
  */
 package amazondynamo;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +15,15 @@ import java.util.logging.Logger;
  *
  * @author laura
  */
-public class StorageNode {
+public class StorageNode{
+    
+    HashMap keyValueStore;
+    StorageNodeMetadata metadata;
+    
+    public StorageNode(int port, String ip, int ID){
+        keyValueStore = new HashMap();
+        metadata = new  StorageNodeMetadata(port, ip, ID);
+    }
     
     public String computeMD5(String key)
     {
@@ -35,5 +45,17 @@ public class StorageNode {
         }
     
         return sb.toString();
-    }    
+    }   
+    
+    public static void main(String args[]) throws IOException{
+            String ip = "localhost";
+            int port = 2224;
+            int ID = 1;
+            StorageNode node = new StorageNode(port, ip, ID);
+            
+            
+            int portLB = 2223;
+            StorageNodeClient clientToLB = new StorageNodeClient("localhost", portLB);
+            clientToLB.sendToLB(node.metadata);
+    }
 }

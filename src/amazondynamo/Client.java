@@ -19,45 +19,33 @@ import java.util.logging.Logger;
  *
  * @author laura
  */
-public class Client {
+public class Client extends BaseClient{
     
-    static String host = "localhost";
-    static int port = 2223;
-    private static Socket clientSocket = null;
-    private static ObjectOutputStream output = null;
     
     public static BufferedReader bufferReader;
     private static final String FILE_PATH = "/src/amazondynamo/commands";
    
-    public static void initConnection() throws IOException
-    {
-        clientSocket = new Socket(host, port);
-        output = new ObjectOutputStream(clientSocket.getOutputStream());
+    String host;
+    int port;
+    
+    public Client(String host, int port) {
+        this.host = host;
+        this.port = port;
     }
     
-    public static void closeConnection() throws IOException
+    void SendPut(String key, Object obj) throws IOException
     {
-        output.close();
-        clientSocket.close();
-    }
-    
-    static void SendPut(String key, Object obj) throws IOException
-    {
-        initConnection();
         Command put = new Command(Command.PUT, key, null, obj);        
-        output.writeObject(put);
-        closeConnection();
+        send(put, host, port);
     }
     
-    static void SendGet(String key) throws IOException
+    void SendGet(String key) throws IOException
     {
-        initConnection();
         Command get = new Command(Command.GET, key);        
-        output.writeObject(get);
-        closeConnection();
+        send(get, host, port);
     } 
     
-    static void readLines()
+    void readLines()
     {
         try {
             
@@ -89,9 +77,10 @@ public class Client {
     
     public static void main(String[] args)
     {
-        
-            
-            readLines();
+            int portLB = 2223;  
+            Client client = new Client("localhost", portLB);
+            client.readLines();
             
     }   
+    
 }

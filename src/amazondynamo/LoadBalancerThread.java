@@ -56,6 +56,13 @@ public class LoadBalancerThread extends Thread{
             System.out.println(command);    
             return 0;
         }
+        else if(o instanceof StorageNodeMetadata )
+        {
+            StorageNodeMetadata metadata = (StorageNodeMetadata)o;
+            System.out.println(metadata);
+            LoadBalancer.storageNodes.add(metadata);
+            return 0;
+        }
         else 
             return 1;
      }    

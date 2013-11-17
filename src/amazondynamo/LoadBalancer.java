@@ -5,9 +5,9 @@
 package amazondynamo;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Vector;
 
 /**
  *
@@ -18,10 +18,9 @@ public class LoadBalancer {
     private static ServerSocket serverSocket = null;
     private static Socket clientSocket = null;
     
-    // This server can accept up to maxClientsCount clients' connections.
-    private static final int maxClientsCount = 10;
-    private static final LoadBalancerThread[] threads = new LoadBalancerThread[maxClientsCount];
+    private static final int port = 2223;
     
+    static Vector<StorageNodeMetadata> storageNodes;
     
     public LoadBalancer(int port)
     {
@@ -31,13 +30,14 @@ public class LoadBalancer {
         } catch (IOException e) {
           System.out.println(e);
         }
+        storageNodes = new Vector<>();
         
     }
     
     public static void main(String args[])
     {
         
-        LoadBalancer loadBalancer = new LoadBalancer(2223);
+        LoadBalancer loadBalancer = new LoadBalancer(port);
          
         /*
          * Create a client socket for each connection and pass it to a new client
