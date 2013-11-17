@@ -53,6 +53,7 @@ public class LoadBalancerThread extends Thread{
         if(o instanceof Command )
         {
             Command command = (Command)o;
+            
             System.out.println(command);    
             return 0;
         }
