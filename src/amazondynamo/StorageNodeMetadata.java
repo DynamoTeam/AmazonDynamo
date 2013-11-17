@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author cristiana
  */
-public class StorageNodeMetadata implements Serializable, Comparable<StorageNodeMetadata> {
+public class StorageNodeMetadata implements Serializable {
     private int port;
     private String ip;
     private int ID; //hiw own key
@@ -41,12 +41,6 @@ public class StorageNodeMetadata implements Serializable, Comparable<StorageNode
     public String getIp()
     {
         return ip;
-    }
-
-    @Override
-    public int compareTo(StorageNodeMetadata o) 
-    {
-        return this.ID - o.ID;
     }
 
 }
