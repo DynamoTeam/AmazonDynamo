@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class StorageNode{
     
     HashMap keyValueStore;
-    StorageNodeMetadata metadata;
+    public static StorageNodeMetadata metadata;
     
     public StorageNode(int port, String ip, int ID){
         keyValueStore = new HashMap();
@@ -51,11 +51,13 @@ public class StorageNode{
             String ip = "localhost";
             int port = 2224;
             int ID = 10;
-            StorageNode node = new StorageNode(port, ip, ID);
-            
+            StorageNode node = new StorageNode(port, ip, ID);            
             
             int portLB = 2223;
             StorageNodeClient clientToLB = new StorageNodeClient("localhost", portLB);
             clientToLB.sendToLB(node.metadata);
+            
+            StorageNodeServer snServer = new StorageNodeServer(node.metadata.getPort());         
+            snServer.startAcceptingConnections();            
     }
 }

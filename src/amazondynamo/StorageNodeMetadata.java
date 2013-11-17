@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class StorageNodeMetadata implements Serializable {
     private int port;
     private String ip;
-    private int ID; //hiw own key
+    private int ID; //his own key
     
     public StorageNodeMetadata(int port, String ip, int ID){
         this.port = port;

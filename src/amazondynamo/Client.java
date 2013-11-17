@@ -8,7 +8,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -25,7 +27,7 @@ public class Client extends BaseClient{
     private static final String FILE_PATH = "/src/amazondynamo/commands";
     static String hostLB = "localhost";
     static int portLB = 2223;    
-    
+       
     //TODO : send key to load balancer
     // delete host and port and set them 
     
@@ -56,6 +58,10 @@ public class Client extends BaseClient{
                 {
                     System.out.println("put");
                     SendPut(Integer.parseInt(tokens[1]),  tokens[2]);
+                    
+                    // just for test
+                    Command testStorageNodeServer = new Command(Command.PUT, 9, null, "test");
+                    send(testStorageNodeServer, "localhost", 2224);
                 }
                 else if(tokens[0].compareTo("get") == 0)
                 {
@@ -66,7 +72,7 @@ public class Client extends BaseClient{
                 //TODO
                 //primeste de la LB
                 //se conecteaza la Nod
-                //
+                //                
             }
             
         } catch (InterruptedException ex) {
@@ -75,9 +81,9 @@ public class Client extends BaseClient{
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
-    }    
-    
-    public static void main(String[] args)
+    }  
+        
+    public static void main(String[] args) 
     {
             Client client = new Client();
             client.readLines();
