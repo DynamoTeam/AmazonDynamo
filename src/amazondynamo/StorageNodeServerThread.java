@@ -47,7 +47,7 @@ public class StorageNodeServerThread extends Thread{
         if(o instanceof Command )
         {
             Command command = (Command)o;
-            System.out.println(command);  
+            System.out.println("la storage node server thread " + command);  
             return 0;
         }
         else 

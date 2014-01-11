@@ -49,8 +49,8 @@ public class StorageNode{
     
     public static void main(String args[]) throws IOException{
             String ip = "localhost";
-            int port = 2224;
-            int ID = 10;
+            int port = 2225;
+            int ID = 15;
             StorageNode node = new StorageNode(port, ip, ID);            
             
             int portLB = 2223;

@@ -18,6 +18,7 @@ public class Command implements Serializable{
    int key; 
    Context context;
    Object obj;
+   int clientPort;
    
    public Command(int msgType, int key)
    {

@@ -54,12 +54,12 @@ public class LoadBalancerThread extends Thread{
         if(o instanceof Command )
         {
             Command command = (Command)o;
-            System.out.println(command);    
+            System.out.println("load balancer thread " + command);    
             System.out.println(LoadBalancer.getNode(command.key));
             
             BaseClient client = new BaseClient();
             client.send(LoadBalancer.getNode(command.key), 
-                    clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());
+                    "localhost", command.clientPort);
             return 0;
         }
         else if(o instanceof StorageNodeMetadata )

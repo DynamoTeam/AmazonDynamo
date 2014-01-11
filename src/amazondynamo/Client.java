@@ -5,15 +5,9 @@
 package amazondynamo;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,19 +21,24 @@ public class Client extends BaseClient{
     private static final String FILE_PATH = "/src/amazondynamo/commands";
     static String hostLB = "localhost";
     static int portLB = 2223;    
+    
+    private static ServerSocket serverSocket = null;
+    static int ownServerPort;
        
     //TODO : send key to load balancer
     // delete host and port and set them 
     
     void SendPut(int key, Object obj) throws IOException
     {
-        Command put = new Command(Command.PUT, key, null, obj);        
+        Command put = new Command(Command.PUT, key, null, obj);   
+        put.clientPort = ownServerPort;
         send(put, hostLB, portLB);
     }
     
     void SendGet(int key) throws IOException
     {
-        Command get = new Command(Command.GET, key);        
+        Command get = new Command(Command.GET, key);      
+        get.clientPort = ownServerPort;
         send(get, hostLB, portLB);
     } 
     
@@ -58,21 +57,13 @@ public class Client extends BaseClient{
                 {
                     System.out.println("put");
                     SendPut(Integer.parseInt(tokens[1]),  tokens[2]);
-                    
-                    // just for test
-                    Command testStorageNodeServer = new Command(Command.PUT, 9, null, "test");
-                    send(testStorageNodeServer, "localhost", 2224);
                 }
                 else if(tokens[0].compareTo("get") == 0)
                 {
                     System.out.println("get");
                     SendGet(Integer.parseInt(tokens[1]));
                 } 
-                
-                //TODO
-                //primeste de la LB
-                //se conecteaza la Nod
-                //                
+                Thread.sleep(100);            
             }
             
         } catch (InterruptedException ex) {
@@ -86,6 +77,11 @@ public class Client extends BaseClient{
     public static void main(String[] args) 
     {
             Client client = new Client();
+            ClientServer clServer = new ClientServer();
+            Thread t = new Thread(clServer);
+            t.start();
+            ownServerPort = clServer.getPort();
+            System.out.println("own server port " + ownServerPort);
             client.readLines();
     }   
     
