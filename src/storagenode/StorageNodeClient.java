@@ -15,16 +15,20 @@ import java.io.IOException;
  */
 public class StorageNodeClient extends BaseClient{
     
-    String hostLB;
-    int portLB;
+    String host;
+    int port;
     
     
-    public StorageNodeClient(String hostLB, int portLB) {
-        this.hostLB = hostLB;
-        this.portLB = portLB;
+    public StorageNodeClient(String host, int port) {
+        this.host = host;
+        this.port = port;
     }
 
-    public void sendToLB(StorageNodeMetadata metadata) throws IOException{
-        send(metadata, hostLB, portLB);
+    public void send(StorageNodeMetadata metadata) throws IOException{
+        send(metadata, host, port);
+    }
+    
+    public void send(String result) throws IOException{
+        send(result, host, port);
     }
 }

@@ -7,7 +7,7 @@ package storagenode;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
+import java.util.HashMap;
 
 /**
  *
@@ -16,10 +16,12 @@ import java.util.Vector;
 public class StorageNodeServer {
     
     public static ServerSocket serverSocketSN = null;
-    public static Socket clientSocketSN = null;    
+    public static Socket clientSocketSN = null; 
+    HashMap storageHash;
     
     public StorageNodeServer(int port)
     {
+        storageHash = new HashMap();
         try {
           serverSocketSN = new ServerSocket(port);
         } catch (IOException e) {
@@ -34,7 +36,7 @@ public class StorageNodeServer {
             try {
                 
               clientSocketSN  = serverSocketSN.accept();
-              (new StorageNodeServerThread(clientSocketSN)).start();
+              (new StorageNodeServerThread(clientSocketSN, this)).start();
 
             } catch (IOException e) {
               System.out.println(e);

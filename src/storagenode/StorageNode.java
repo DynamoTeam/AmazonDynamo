@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class StorageNode{
     
     HashMap keyValueStore;
-    public static StorageNodeMetadata metadata;
+    public StorageNodeMetadata metadata;
     
     public StorageNode(int port, String ip, int ID){
         keyValueStore = new HashMap();
@@ -56,14 +56,16 @@ public class StorageNode{
             int min = 2225;
             int port = rand.nextInt((max - min) + 1) + min;
             
-            max = 30;
-            min = 10;
+            max = 99;
+            min = 1;
             int ID = rand.nextInt((max - min) + 1) + min;
             StorageNode node = new StorageNode(port, ip, ID);            
             
             int portLB = 2223;
+            
+            System.out.println("Storage node with ID " + ID);
             StorageNodeClient clientToLB = new StorageNodeClient("localhost", portLB);
-            clientToLB.sendToLB(node.metadata);
+            clientToLB.send(node.metadata);
             
             StorageNodeServer snServer = new StorageNodeServer(node.metadata.getPort());         
             snServer.startAcceptingConnections();            

@@ -15,10 +15,12 @@ import loadbalancer.LoadBalancerThread;
 public class StorageNodeServerThread extends Thread{
     
     private Socket clientSocketSN = null;
+    StorageNodeServer server;
     
-    public StorageNodeServerThread(Socket clientSocketSN)
+    public StorageNodeServerThread(Socket clientSocketSN, StorageNodeServer server)
     {
       this.clientSocketSN = clientSocketSN;
+      this.server = server;
     }
     
      @Override
@@ -49,7 +51,18 @@ public class StorageNodeServerThread extends Thread{
         if(o instanceof Command )
         {
             Command command = (Command)o;
-            System.out.println("la storage node server thread " + command);  
+            System.out.println("la storage node server thread " + command); 
+            if (command.msgType == Command.GET){
+                String getResult = null;
+                if (server.storageHash.containsKey(command.key))
+                       getResult = (String)server.storageHash.get(command.key);
+                StorageNodeClient cl = new StorageNodeClient("localhost", command.clientPort);
+                cl.send(getResult);
+            }
+            if (command.msgType == Command.PUT){
+                server.storageHash.put(command.key, command.obj);
+            }
+            
             return 0;
         }
         else 

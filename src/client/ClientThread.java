@@ -31,21 +31,33 @@ public class ClientThread extends Thread{
   public void run() {
     
     try {
-      is = new ObjectInputStream(clientSocket.getInputStream());
+        is = new ObjectInputStream(clientSocket.getInputStream());
+
+        
+        try {
+            Object o = is.readObject();
+            if (o instanceof StorageNodeMetadata) {
+                StorageNodeMetadata m = null;
+                m = (StorageNodeMetadata) o;
+
+                synchronized(Client.countLock) {
+                    Client.storageNodePort = m.getPort();
+                    Client.countLock.notify();
+                }
+            }
+            if (o instanceof String){
+                String s = (String) o;
+                synchronized(Client.countLock) {
+                    Client.getResult = s;
+                    Client.countLock.notify();
+                }
+                
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
       
-      StorageNodeMetadata m = null;
-          try {
-              m = (StorageNodeMetadata) is.readObject();
-              
-              synchronized(Client.countLock) {
-                  Client.storageNodePort = m.getPort();
-                  Client.countLock.notify();
-              }
-          } catch (ClassNotFoundException ex) {
-              Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-          }
-      
-      is.close();
+        is.close();
       clientSocket.close();
     } catch (IOException e) {
     }

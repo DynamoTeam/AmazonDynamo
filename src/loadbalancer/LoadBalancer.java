@@ -45,12 +45,18 @@ public class LoadBalancer {
                 return null;
         else
         {
+            
             nodeMeta = null;            
             int diff = moduloRange;
+            
             for (int i=0; i<storageNodes.size(); i++){
                 StorageNodeMetadata node = storageNodes.get(i);
-                if ((node.getID() > key) && (node.getID() - key < diff))
+                int nodeId = node.getID();
+                if ((nodeId > hashKey) && (nodeId - hashKey < diff))
+                {
                     nodeMeta = node;
+                    diff = nodeId - hashKey;
+                }
             }
             
             if (nodeMeta == null)//when the key is store on the first node

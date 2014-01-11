@@ -26,24 +26,21 @@ public class Client extends BaseClient{
     private static ServerSocket serverSocket = null;
     static int ownServerPort;
     public static int storageNodePort = 0;
+    public static String getResult;
     public static final Object countLock = new Object();
-    
-       
-    //TODO : send key to load balancer
-    // delete host and port and set them 
-    
-    void SendPut(int key, Object obj) throws IOException
+   
+    void SendPut(int key, Object obj, String host, int port) throws IOException
     {
         Command put = new Command(Command.PUT, key, null, obj);   
         put.clientPort = ownServerPort;
-        send(put, hostLB, portLB);
+        send(put, host, port);
     }
     
-    void SendGet(int key) throws IOException
+    void SendGet(int key, String host, int port) throws IOException
     {
         Command get = new Command(Command.GET, key);      
         get.clientPort = ownServerPort;
-        send(get, hostLB, portLB);
+        send(get, host, port);
     } 
     
     void readLines()
@@ -60,12 +57,12 @@ public class Client extends BaseClient{
                 if(tokens[0].compareTo("put") == 0)
                 {
                     System.out.println("put");
-                    SendPut(Integer.parseInt(tokens[1]),  tokens[2]);
+                    SendPut(Integer.parseInt(tokens[1]),  tokens[2], hostLB, portLB);
                 }
                 else if(tokens[0].compareTo("get") == 0)
                 {
                     System.out.println("get");
-                    SendGet(Integer.parseInt(tokens[1]));
+                    SendGet(Integer.parseInt(tokens[1]), hostLB, portLB);
                 } 
                 
                 synchronized(countLock) {
@@ -75,6 +72,18 @@ public class Client extends BaseClient{
                     }
                 }
                 System.out.println("storageNodePort= " + storageNodePort);
+                if(tokens[0].compareTo("put") == 0)
+                    SendPut(Integer.parseInt(tokens[1]),  tokens[2], "localhost", storageNodePort);
+                else if(tokens[0].compareTo("get") == 0){
+                    SendGet(Integer.parseInt(tokens[1]), "localhost", storageNodePort);
+                    synchronized(countLock) {
+                        try {
+                            countLock.wait();
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    System.out.println("GET result: " + getResult);
+                }
             }
             
         } catch (InterruptedException ex) {

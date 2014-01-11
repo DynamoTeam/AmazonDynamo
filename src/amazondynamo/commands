@@ -2,3 +2,9 @@ put 9 masina
 put 13 tigaie
 put 78 carte
 get 9
+put 56 patura
+get 78
+put 3 catel
+put 89 casa
+get 3
+put 89 apartament
