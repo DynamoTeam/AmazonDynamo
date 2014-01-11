@@ -14,11 +14,11 @@ public class Command implements Serializable{
    public final static int GET = 0;
    public final static int PUT = 1;
    
-   int msgType; 
-   int key; 
-   Context context;
-   Object obj;
-   int clientPort;
+   public int msgType; 
+   public int key; 
+   public Context context;
+   public Object obj;
+   public int clientPort;
    
    public Command(int msgType, int key)
    {

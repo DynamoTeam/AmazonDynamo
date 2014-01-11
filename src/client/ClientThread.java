@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 
-package amazondynamo;
+package client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import storagenode.StorageNodeMetadata;
 
 /**
  *
@@ -30,13 +31,16 @@ public class ClientThread extends Thread{
   public void run() {
     
     try {
-      System.out.println("de la Storage Node");
       is = new ObjectInputStream(clientSocket.getInputStream());
       
       StorageNodeMetadata m = null;
           try {
               m = (StorageNodeMetadata) is.readObject();
-              System.out.println("msg: " + m);
+              
+              synchronized(Client.countLock) {
+                  Client.storageNodePort = m.getPort();
+                  Client.countLock.notify();
+              }
           } catch (ClassNotFoundException ex) {
               Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
           }

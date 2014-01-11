@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
-package amazondynamo;
+package loadbalancer;
 
+import amazondynamo.Command;
+import client.BaseClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import storagenode.StorageNodeMetadata;
 
 /**
  *

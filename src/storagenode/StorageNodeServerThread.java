@@ -2,13 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package amazondynamo;
+package storagenode;
 
+import amazondynamo.Command;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import loadbalancer.LoadBalancerThread;
 
 public class StorageNodeServerThread extends Thread{
     

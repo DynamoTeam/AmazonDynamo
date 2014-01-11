@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package amazondynamo;
+package storagenode;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,8 +50,15 @@ public class StorageNode{
     
     public static void main(String args[]) throws IOException{
             String ip = "localhost";
-            int port = 2225;
-            int ID = 15;
+                      
+            Random rand = new Random();
+            int max = 2999;
+            int min = 2225;
+            int port = rand.nextInt((max - min) + 1) + min;
+            
+            max = 30;
+            min = 10;
+            int ID = rand.nextInt((max - min) + 1) + min;
             StorageNode node = new StorageNode(port, ip, ID);            
             
             int portLB = 2223;

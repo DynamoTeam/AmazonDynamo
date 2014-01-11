@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package amazondynamo;
+package client;
 
+import amazondynamo.Command;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class Client extends BaseClient{
     
     private static ServerSocket serverSocket = null;
     static int ownServerPort;
+    public static int storageNodePort = 0;
+    public static final Object countLock = new Object();
+    
        
     //TODO : send key to load balancer
     // delete host and port and set them 
@@ -63,7 +67,14 @@ public class Client extends BaseClient{
                     System.out.println("get");
                     SendGet(Integer.parseInt(tokens[1]));
                 } 
-                Thread.sleep(100);            
+                
+                synchronized(countLock) {
+                    try {
+                        countLock.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+                System.out.println("storageNodePort= " + storageNodePort);
             }
             
         } catch (InterruptedException ex) {
@@ -81,7 +92,6 @@ public class Client extends BaseClient{
             Thread t = new Thread(clServer);
             t.start();
             ownServerPort = clServer.getPort();
-            System.out.println("own server port " + ownServerPort);
             client.readLines();
     }   
     

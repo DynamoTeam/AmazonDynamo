@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package amazondynamo;
+package client;
 
 import java.io.IOException;
 import java.net.ServerSocket;

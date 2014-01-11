@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package amazondynamo;
+package storagenode;
 
+import client.BaseClient;
 import java.io.IOException;
 
 /**

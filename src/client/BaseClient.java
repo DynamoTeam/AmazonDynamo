@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package amazondynamo;
+package client;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -31,7 +31,7 @@ public class BaseClient {
         clientSocket.close();
     }
     
-    void send(Object obj, String host, int port) throws IOException
+    public void send(Object obj, String host, int port) throws IOException
     {
         initConnection(host, port);
         output.writeObject(obj);
