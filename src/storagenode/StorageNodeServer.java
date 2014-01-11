@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -18,6 +19,7 @@ public class StorageNodeServer {
     public static ServerSocket serverSocketSN = null;
     public static Socket clientSocketSN = null; 
     HashMap storageHash;
+    Vector<StorageNodeMetadata>  storageNodes;
     
     public StorageNodeServer(int port)
     {

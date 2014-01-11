@@ -82,7 +82,7 @@ public class LoadBalancer {
          */
         while (true) {
           try {
-            clientSocket = serverSocket.accept();
+            clientSocket = loadBalancer.serverSocket.accept();
             
             (new LoadBalancerThread(clientSocket)).start();
                         

@@ -8,6 +8,7 @@ import amazondynamo.Command;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import loadbalancer.LoadBalancerThread;
@@ -63,6 +64,11 @@ public class StorageNodeServerThread extends Thread{
                 server.storageHash.put(command.key, command.obj);
             }
             
+            return 0;
+        }
+        else if (o instanceof Vector){
+            server.storageNodes = (Vector<StorageNodeMetadata>)o;
+            System.out.println(server.storageNodes);
             return 0;
         }
         else 

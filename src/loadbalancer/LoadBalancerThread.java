@@ -11,8 +11,6 @@ import client.BaseClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import storagenode.StorageNodeMetadata;
@@ -48,11 +46,13 @@ public class LoadBalancerThread extends Thread{
             } catch (IOException e) {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(LoadBalancerThread.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LoadBalancerThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
      }
      
-     public int parseObject(Object o) throws IOException
+     public int parseObject(Object o) throws IOException, InterruptedException
      {
         if(o instanceof Command )
         {
@@ -71,7 +71,14 @@ public class LoadBalancerThread extends Thread{
             System.out.println(metadata);
             LoadBalancer.storageNodes.add(metadata);
            
+            Thread.sleep(100);
             System.out.println(LoadBalancer.storageNodes);
+            for (int i=0; i<LoadBalancer.storageNodes.size(); i++){
+                BaseClient client = new BaseClient();
+                client.send(LoadBalancer.storageNodes, 
+                        "localhost", LoadBalancer.storageNodes.get(i).getPort());
+                
+            }
             return 0;
         }
         else 
