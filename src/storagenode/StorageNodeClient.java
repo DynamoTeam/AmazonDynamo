@@ -8,6 +8,7 @@ package storagenode;
 
 import client.BaseClient;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -31,4 +32,13 @@ public class StorageNodeClient extends BaseClient{
     public void send(String result) throws IOException{
         send(result, host, port);
     }
+    
+    public void send(ArrayList<NodeClock> vec) throws IOException{
+        send(vec, host, port);
+    }
+    
+    public void send(ReplicationCommand rc) throws IOException{
+        send(rc, host, port);
+    }
+       
 }

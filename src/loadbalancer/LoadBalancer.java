@@ -73,7 +73,7 @@ public class LoadBalancer {
     
     public static void main(String args[])
     {
-        
+        System.out.println("Load Balancer");
         LoadBalancer loadBalancer = new LoadBalancer(port);
          
         /*

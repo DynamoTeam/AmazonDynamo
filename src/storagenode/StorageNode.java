@@ -67,7 +67,7 @@ public class StorageNode{
             StorageNodeClient clientToLB = new StorageNodeClient("localhost", portLB);
             clientToLB.send(node.metadata);
             
-            StorageNodeServer snServer = new StorageNodeServer(node.metadata.getPort());         
+            StorageNodeServer snServer = new StorageNodeServer(node.metadata);         
             snServer.startAcceptingConnections();            
     }
 }

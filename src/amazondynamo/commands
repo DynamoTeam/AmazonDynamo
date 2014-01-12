@@ -8,3 +8,7 @@ put 3 catel
 put 89 casa
 get 3
 put 89 apartament
+get 89
+get 89
+put 89 vila
+get 89
